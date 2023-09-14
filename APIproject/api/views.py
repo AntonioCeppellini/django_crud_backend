@@ -1,11 +1,15 @@
+#####some of the import aren't used because where they are used is commented out, i tried to leave all the code or quite all the code to let understand quite every options#####
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from .models import Article
-from .serializers import ArticleSerializer
+from .serializers import ArticleSerializer, UserSerializer
 from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view, APIView
 from rest_framework.response import Response
 from rest_framework import status, generics, mixins, viewsets
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -118,7 +122,7 @@ class ArticleDetails(generics.GenericAPIView, mixins.RetrieveModelMixin, mixins.
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer """
 
-#####using model viewsets(fastest way! :D)#####
+#####using model viewset(fastest way! :D)#####
 class ArticleViewSet(viewsets.ModelViewSet):
     #####setting the queryset#####
     #####a queryset is a collection of objects from the database#####
@@ -126,3 +130,11 @@ class ArticleViewSet(viewsets.ModelViewSet):
     #####serializer class used for validating input and serialize output#####
     #####(serializers are responsible for converting objects into data types understandable by JavaScript and front-end frameworks)#####
     serializer_class = ArticleSerializer
+    #####authentication class, we want to specify what authentication we want#####
+    permission_classes = [IsAuthenticated]
+    authentication_classes = (TokenAuthentication)
+
+#####model viewset to create user#####
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

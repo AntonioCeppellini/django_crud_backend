@@ -1,2 +1,2 @@
 # django_react_app
-Django back-end combined with React front-end
+Useful django back_end you can use this sample to connect a front-end application
